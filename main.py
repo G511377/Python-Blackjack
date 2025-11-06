@@ -10,6 +10,19 @@ global investedChips
 # vvvvvvvvvv START OF FUNCTIONS vvvvvvvvvv
 
 # Draw n cards, recalculate hand sum, peek at your hand
+
+def checkFailure():
+    global chips
+    print()
+    if chips == 0:
+        choice = input("You're out of chips! Good try, but not much luck today, try again? y/n --> ").casefold()
+        if choice == 'y':
+            print("Goodluck, get back in there!")
+            chips = 500
+        if choice == 'n':
+            print("Alright, good games... GAURDS! To the cellar with this one...")
+            exit()
+
 def draw(n):
     global handSum
 
@@ -105,7 +118,7 @@ def roundFinish():
     while dealerHandSum < 17:
         dealerDraw(1)
 
-    print("The dealer's hand is", dealerHand, "and the sum of his cards is", dealerHandSum)
+    print("The dealer's hand is", dealerHand, "and the sum of their cards is", dealerHandSum)
 
 # If the player busts, they lose. If the player and the dealer both bust, the player wins 1x their bet.
     if handSum > 21:
@@ -114,6 +127,7 @@ def roundFinish():
             chips += investedChips
             return
         print("You busted and the dealer didn't! You lose your bet!")
+        checkFailure()
         return
 
 # The dealer bust, the player wins 2x their bet
@@ -131,16 +145,17 @@ def roundFinish():
 # The player lost to the dealer, the player is returned nothing.
     if dealerHandSum > handSum:
         print("You lose this round and your bet!")
+        checkFailure()
         return
 
 # The player beats the dealer, the player wins 2x their bet. If the player ended on a blackjack, they win 2.5x their bet.
     if dealerHandSum < handSum and handSum <= 21:
         if handSum == 21:
-            print("You win with a blackjack and get +", investedChips * 1.5, "!")
+            print("You win with a blackjack and get +", int(investedChips * 1.5), "!")
             chips += investedChips * 2.5
             return
         print("You win this round and get +", investedChips, "!")
-        chips += investedChips * 2
+        chips += int(investedChips * 2)
         return
 
 # ^^^^^^^^^^ END OF FUNCTIONS ^^^^^^^^^^
@@ -171,13 +186,18 @@ chips = 500
 print("Welcome to Blackjack! If you get 3000 chips, you win!")
 
 # Looping until the player has >3000 chips
-while chips < 3000:
+while chips < 3000 and chips != 0:
     print()
+    '''
+    If we're playing until success, then add this back and remove the uncommented print line below
     if(chips == 0):
         print("We see that you ran out of chips, but we play till success! We've given you 50 chips on the house.")
         chips = 50
     else:
         print("-- You have,", chips, "chips!")
+    '''
+    print("-- You have,", chips, "chips!")
+    
 
 # Take the bet from the player
     while True:
@@ -195,6 +215,7 @@ while chips < 3000:
                 print("Your bet is invalid! Choose again.")
             else:
                 print("Your placed bet is", investedChips, "chips.")
+                print()
                 chips -= investedChips
                 break
         else:
@@ -226,4 +247,8 @@ while chips < 3000:
     roundFinish()
 
 # if they're free and have >=3000 chips, they win!
-print("The doors unlock and you're free... Go on, you earned this.")
+if chips >= 3000:
+    print("The doors unlock and you're free... Go on, you earned this.")
+
+if chips <= 0:
+    print("Well if you're out of chips, you can't play. But we also can't let you leave unless you win, so you're going to the cellar with the other losers.")
