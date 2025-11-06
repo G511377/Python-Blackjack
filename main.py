@@ -81,6 +81,7 @@ def peek():
 def hos():
      looping = True
      while looping:
+        print()
         choice = input("Hit or Stand...? --> ").casefold()
         if choice == 'hit':
             draw(1)
@@ -97,6 +98,8 @@ def roundFinish():
     global handSum
     global chips
     global investedChips
+
+    print()
 
     # Dealer time 2
     while dealerHandSum < 17:
@@ -163,12 +166,13 @@ deckClone = deck.copy()
 
 # Fade in from black, Blackjack!
 
-chips = 3000
+chips = 500
 
 print("Welcome to Blackjack! If you get 3000 chips, you win!")
 
 # Looping until the player has >3000 chips
-while chips < 500:
+while chips < 3000:
+    print()
     if(chips == 0):
         print("We see that you ran out of chips, but we play till success! We've given you 50 chips on the house.")
         chips = 50
