@@ -187,6 +187,12 @@ print("Welcome to Blackjack! If you get 3000 chips, you win!")
 
 # Looping until the player has >3000 chips
 while chips < 3000 and chips != 0:
+
+# Reset the hands and shuffle the cards back into the deck.
+    deckClone = deck.copy()
+    hand.clear()
+    dealerHand.clear()
+
     print()
     '''
     If we're playing until success, then add this back and remove the uncommented print line below
