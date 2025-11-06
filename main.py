@@ -1,3 +1,5 @@
+# Written by Garrett H.
+
 import random
 
 # Global Variables
@@ -189,9 +191,11 @@ print("Welcome to Blackjack! If you get 3000 chips, you win!")
 while chips < 3000 and chips != 0:
 
 # Reset the hands and shuffle the cards back into the deck.
+
+    # Readying the hands and the deck
+    hand = []
+    dealerHand = []
     deckClone = deck.copy()
-    hand.clear()
-    dealerHand.clear()
 
     print()
     '''
@@ -226,10 +230,6 @@ while chips < 3000 and chips != 0:
                 break
         else:
             print("Invalid bet! Please choose 50, 100, 250, 500, 1000, 1500.")
-
-# Readying the hands
-    hand = []
-    dealerHand = []
 
 # Assign value to cards and calculate the value of the cards in hand
     card_values = {'Ace': 11, 'King': 10, 'Queen': 10, 'Jack': 10}
