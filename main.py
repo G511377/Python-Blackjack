@@ -168,7 +168,7 @@ chips = 3000
 print("Welcome to Blackjack! If you get 3000 chips, you win!")
 
 # Looping until the player has >3000 chips
-while chips < 3001:
+while chips < 500:
     if(chips == 0):
         print("We see that you ran out of chips, but we play till success! We've given you 50 chips on the house.")
         chips = 50
