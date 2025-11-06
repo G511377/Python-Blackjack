@@ -4,8 +4,10 @@ import random
 global handSum
 global dealerHandSum
 global numAces
+global chips
+global investedChips
 
-# vvv Funky Unc Functions vvv
+# vvvvvvvvvv START OF FUNCTIONS vvvvvvvvvv
 
 # Draw n cards, recalculate hand sum, peek at your hand
 def draw(n):
@@ -93,6 +95,8 @@ def hos():
 def roundFinish():
     global dealerHandSum
     global handSum
+    global chips
+    global investedChips
 
     # Dealer time 2
     while dealerHandSum < 17:
@@ -104,18 +108,21 @@ def roundFinish():
     if handSum > 21:
         if dealerHandSum > 21 and handSum > 21:
             print("You and the dealer both bust, you get your bet back.")
+            chips += investedChips
             return
         print("You busted and the dealer didn't! You lose your bet!")
         return
 
 # The dealer bust, the player wins 2x their bet
     if dealerHandSum > 21:
-        print("The dealer busts! You win your bet back +, winnings, !")
+        print("The dealer busts! You win your bet back +", investedChips, "!")
+        chips += investedChips * 2
         return
 
 # The player and dealer tied, the player wins 1x their bet.
     if dealerHandSum == handSum:
         print("You and the dealer tied, you get your bet back")
+        chips += investedChips
         return
 
 # The player lost to the dealer, the player is returned nothing.
@@ -126,10 +133,14 @@ def roundFinish():
 # The player beats the dealer, the player wins 2x their bet. If the player ended on a blackjack, they win 2.5x their bet.
     if dealerHandSum < handSum and handSum <= 21:
         if handSum == 21:
-            print("You win with a blackjack and get +, winnings ,!")
+            print("You win with a blackjack and get +", investedChips * 1.5, "!")
+            chips += investedChips * 2.5
             return
-        print("You win this round and get +, winnings ,!")
+        print("You win this round and get +", investedChips, "!")
+        chips += investedChips * 2
         return
+
+# ^^^^^^^^^^ END OF FUNCTIONS ^^^^^^^^^^
 
 # Creating the base deck of cards
 class Card:
@@ -149,29 +160,66 @@ deck = [Card(value, color) for value in values for color in colors]
 
 # deckClone is used rather than deck so we can remove cards, will be important to reset deckClone at the end of the round
 deckClone = deck.copy()
-hand = []
-dealerHand = []
+
+# Fade in from black, Blackjack!
+
+chips = 3000
+
+print("Welcome to Blackjack! If you get 3000 chips, you win!")
+
+# Looping until the player has >3000 chips
+while chips < 3001:
+    if(chips == 0):
+        print("We see that you ran out of chips, but we play till success! We've given you 50 chips on the house.")
+        chips = 50
+    else:
+        print("-- You have,", chips, "chips!")
+
+# Take the bet from the player
+    while True:
+        tempChips = chips
+        bet = input("Place your bet! {50, 100, 250, 500, 1000, 1500} --> ")
+        try:
+            investedChips = int(bet)
+        except ValueError:
+            print("Make sure to enter an integer! Try that again for me...")
+            continue
+
+        if investedChips in (50, 100, 250, 500, 1000, 1500):
+            tempChips -= investedChips
+            if tempChips < 0:
+                print("Your bet is invalid! Choose again.")
+            else:
+                print("Your placed bet is", investedChips, "chips.")
+                chips -= investedChips
+                break
+        else:
+            print("Invalid bet! Please choose 50, 100, 250, 500, 1000, 1500.")
+
+# Readying the hands
+    hand = []
+    dealerHand = []
 
 # Assign value to cards and calculate the value of the cards in hand
-card_values = {'Ace': 11, 'King': 10, 'Queen': 10, 'Jack': 10}
-for n in range(2, 11):
-     card_values[str(n)] = n
+    card_values = {'Ace': 11, 'King': 10, 'Queen': 10, 'Jack': 10}
+    for n in range(2, 11):
+        card_values[str(n)] = n
 
-handSum = sum(card_values[card.value] for card in hand)
-dealerHandSum = sum(card_values[card.value] for card in dealerHand)
+    handSum = sum(card_values[card.value] for card in hand)
+    dealerHandSum = sum(card_values[card.value] for card in dealerHand)
 
 # Dealer 1: Take two cards from the deckClone, reveal one. 
-dealerDraw(2)
-print("The dealer has a(n)", dealerHand[0], "face up, and a card face down.")
-print(dealerHandSum)
+    dealerDraw(2)
+    print("The dealer has a(n)", dealerHand[0], "face up, and a card face down.")
 
 # Player 1: Take two cards from the deckClone, remove them and put them in hand. 
-draw(2)
+    draw(2)
 
 # Hit or Stand?
-hos()
+    hos()
 
-# If busted -> see if dealer busts -> if he does, get your chips back OR if he doesn't, you lose your chips. 
-# If stand, see if dealer beats you -> if he does, lose your chips. OR if he busts or does not, win chips + interest
+# Handle the end of the round
+    roundFinish()
 
-roundFinish()
+# if they're free and have >=3000 chips, they win!
+print("The doors unlock and you're free... Go on, you earned this.")
