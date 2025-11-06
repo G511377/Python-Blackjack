@@ -22,9 +22,10 @@ def checkFailure():
             print("Goodluck, get back in there!")
             chips = 500
         if choice == 'n':
-            print("Alright, good games... GAURDS! To the cellar with this one...")
+            print("Alright, good games... GUARDS! To the cellar with this one...")
             exit()
 
+# Function to draw cards for the player
 def draw(n):
     global handSum
 
@@ -57,6 +58,7 @@ def draw(n):
 
     peek()
 
+# Function to draw cards for the dealer
 def dealerDraw(n):
     global dealerHandSum
 
@@ -108,6 +110,7 @@ def hos():
         else:
             print("Hit or Stand!")
 
+# Handles winning or losing
 def roundFinish():
     global dealerHandSum
     global handSum
