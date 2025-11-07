@@ -16,14 +16,18 @@ global investedChips
 def checkFailure():
     global chips
     print()
-    if chips == 0:
-        choice = input("You're out of chips! Good try, but not much luck today, try again? y/n --> ").casefold()
-        if choice == 'y':
-            print("Goodluck, get back in there!")
-            chips = 500
-        if choice == 'n':
-            print("Alright, good games... GUARDS! To the cellar with this one...")
-            exit()
+    while True:
+        if chips == 0:
+            choice = input("You're out of chips! Good try, but not much luck today, try again? y/n --> ").casefold()
+            if choice == 'y':
+                print("Goodluck, get back in there!")
+                chips = 500
+                break
+            if choice == 'n':
+                print("Alright, good games... GUARDS! To the cellar with this one...")
+                exit()
+            else:
+                print("It's 'y' or 'n', try that again for me")
 
 # Function to draw cards for the player
 def draw(n):
@@ -258,6 +262,3 @@ while chips < 3000 and chips != 0:
 # if they're free and have >=3000 chips, they win!
 if chips >= 3000:
     print("The doors unlock and you're free... Go on, you earned this.")
-
-if chips <= 0:
-    print("Well if you're out of chips, you can't play. But we also can't let you leave unless you win, so you're going to the cellar with the other losers.")
